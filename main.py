@@ -50,3 +50,8 @@ dataset.take(1) #prendre un seul exemple parmi plusieurs
 
 #Vérifier le nombre de classes
 labels[0, :].shape
+
+def map_fc(input_ids, masks, labels):
+    return{'input_ids':input_ids, 'attention_mask':masks}, labels
+dataset = dataset.map(map_fc)
+dataset.take(1)
