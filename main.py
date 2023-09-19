@@ -55,3 +55,11 @@ def map_fc(input_ids, masks, labels):
     return{'input_ids':input_ids, 'attention_mask':masks}, labels
 dataset = dataset.map(map_fc)
 dataset.take(1)
+
+batch_size = 16
+dataset = dataset.shuffle(10000).batch(batch_size, drop_remainder=True)
+dataset.take(1)
+# Faire le split et vérifier les sizes
+split = 0.8
+size = int((num_samples/batch_size)*split)
+print(size)
