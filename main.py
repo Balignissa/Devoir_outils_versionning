@@ -73,3 +73,22 @@ from transformers import TFAutoModel
 bert = TFAutoModel.from_pretrained('bert-base-uncased')
 bert.summary()
 
+
+input_ids = tf.keras.layers.Input(shape=(seq_len), name='input_ids', dtype='int32')
+mask = tf.keras.layers.Input(shape=(seq_len), name='attention_mask', dtype='int32')
+
+embeddings = bert.bert(input_ids, attention_mask = mask)[1]
+
+x = tf.keras.layers.Dense(size, activation = 'relu')(embeddings)
+y = tf.keras.layers.Dense(6, activation = 'softmax', name = 'outputs')(x)
+model = tf.keras.Model(inputs = [input_ids, mask], outputs = y)
+model.summary()
+
+optimizer = tf.keras.optimizers.legacy.Adam(lr = 1e-5, decay = 1e-6)
+tf.keras.losses.CategoricalCrossentropy()
+loss ='categorical_crossentropy'
+acc = tf.keras.metrics.CategoricalAccuracy('accuracy')
+
+model.compile(optimizer = optimizer, loss = loss, metrics = [acc])
+
+histoty = model.fit(train_data, validation_data=val_data, epochs=3)
