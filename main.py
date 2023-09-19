@@ -63,3 +63,13 @@ dataset.take(1)
 split = 0.8
 size = int((num_samples/batch_size)*split)
 print(size)
+
+#Chercher le train et le test
+train_data = dataset.take(size)
+val_data = dataset.skip(size)
+del dataset
+#Importer le model bert
+from transformers import TFAutoModel
+bert = TFAutoModel.from_pretrained('bert-base-uncased')
+bert.summary()
+
